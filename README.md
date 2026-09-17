@@ -245,7 +245,7 @@ python3 --version
 
 Step 1 — Clone the repository
 
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone <https://github.com/vanshsharma1234/Aionos-Assignment/edit/main/>
 cd Veridian_Internal_Service_Agent
 
 Replace <YOUR_GITHUB_REPOSITORY_URL> with your GitHub repository URL.
