@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Veridian Internal Service Agent</title>
+<style>
+:root{
+ --navy:#15294b; --navy2:#203a66; --ink:#172033; --muted:#64748b;
+ --bg:#f3f6fa; --card:#fff; --line:#e2e8f0; --blue:#2f6fed;
+ --blueSoft:#edf4ff; --green:#138a58; --red:#c93636;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+header{
+ background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff;
+ min-height:86px;padding:20px 34px;display:flex;align-items:center;justify-content:space-between;
+ box-shadow:0 4px 18px #15294b22
+}
+.brand{display:flex;align-items:center;gap:14px}.brandmark{width:42px;height:42px;border-radius:12px;background:#ffffff16;border:1px solid #ffffff35;display:grid;place-items:center;font-weight:900}
+.logo{font-weight:800;letter-spacing:.2px;font-size:16px}.sub{opacity:.76;font-size:12px;margin-top:4px}
+.badge{background:#ffffff14;border:1px solid #ffffff2d;padding:8px 13px;border-radius:20px;font-size:12px}
+main{max-width:1280px;margin:26px auto;padding:0 22px}
+.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 5px 18px #17203308}
+.statTop{display:flex;justify-content:space-between;align-items:center}.num{font-size:26px;font-weight:800;color:var(--navy)}.label{font-size:12px;color:var(--muted);margin-top:4px}.dot{width:9px;height:9px;border-radius:50%;background:var(--blue)}
+.notice{background:#fff8e7;border:1px solid #f1d58b;color:#73540b;border-radius:12px;padding:11px 14px;font-size:11.5px;margin-bottom:18px;line-height:1.45}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:17px;box-shadow:0 7px 24px #1720330b;overflow:hidden;min-width:0}
+.cardTitle{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.cardTitle h2{font-size:16px;margin:0}.small{font-size:11px;color:var(--muted)}
+.chat{height:650px;display:flex;flex-direction:column}
+.messages{flex:1;overflow:auto;padding:20px;background:linear-gradient(#fbfcfe,#f8fafc)}
+.msg{max-width:86%;padding:12px 14px;border-radius:14px;margin:9px 0;line-height:1.5;font-size:13px;white-space:normal}
+.bot{background:var(--blueSoft);border:1px solid #d8e6ff;border-top-left-radius:5px}
+.user{background:var(--navy);color:#fff;margin-left:auto;border-top-right-radius:5px}
+.meta{font-size:10.5px;color:var(--muted);margin-top:8px;padding-top:7px;border-top:1px solid #dbe5f4}
+.user .meta{color:#d5deec;border-color:#ffffff25}
+.composer{display:flex;gap:9px;padding:14px;border-top:1px solid var(--line);background:#fff}
+input{flex:1;padding:12px 13px;border:1px solid #ccd6e3;border-radius:11px;outline:none;font:inherit;font-size:13px}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2f6fed16}
+button{border:0;background:var(--blue);color:#fff;padding:11px 15px;border-radius:10px;font-weight:700;cursor:pointer}
+button:hover{filter:brightness(.96)}
+.quick{padding:0 14px 15px;display:flex;flex-wrap:wrap;gap:7px;background:#fff}
+.quick button{font-size:11px;padding:8px 10px;background:#eef3f8;color:#34445b;border:1px solid #dce4ee}
+.quick button:hover{background:#e5edf8}
+.service{height:650px;display:flex;flex-direction:column}
+.tabs{display:flex;gap:8px;padding:14px 16px 10px}.tabs button{background:#edf2f7;color:#334155;font-size:12px}.tabs button.active{background:var(--navy);color:#fff}
+.tablewrap{overflow:auto;flex:1;padding:0 16px 16px}
+table{width:100%;border-collapse:collapse;font-size:11.5px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:#64748b;font-weight:700;position:sticky;top:0;background:#fff}
+.status{color:#475569}.id{font-weight:800;color:var(--navy)}
+.footer{text-align:center;color:#7b8798;font-size:11px;padding:18px}
+.typing{opacity:.7;font-style:italic}
+@media(max-width:950px){.overview{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.chat,.service{height:560px}}
+@media(max-width:560px){header{padding:16px 18px}.badge{display:none}main{padding:0 12px}.overview{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand">
+  <div class="brandmark">V</div>
+  <div><div class="logo">VERIDIAN · INTERNAL SERVICE AGENT</div><div class="sub">Conversational IT support · Policy-grounded · Assignment 2</div></div>
+ </div>
+ <div class="badge">Prototype · Assignment sample data</div>
+</header>
+
+<main>
+ <section class="overview" id="stats"></section>
+
+ <div class="notice">
+   <strong>Demo data:</strong> The requests and ticket records shown here are the sample records supplied in Assignment 2. They are used to demonstrate the agent workflow and are not connected to a live Veridian system.
+ </div>
+
+ <div class="grid">
+  <section class="card chat">
+   <div class="cardTitle">
+    <div><h2>AI Support Agent</h2><div class="small">Describe your issue naturally — no fixed question format</div></div>
+    <div class="small">● Online</div>
+   </div>
+   <div class="messages" id="messages">
+    <div class="msg bot">
+     Hi! I’m your Veridian IT support agent. 👋<br><br>
+     Tell me what’s going wrong or what you need help with. Describe it naturally — I’ll guide you using the supplied support policies.
+     <div class="meta">Policy-grounded · Assignment 2 data pack</div>
+    </div>
+   </div>
+   <div class="composer">
+    <input id="input" placeholder="e.g. My VPN stopped working this morning…" autocomplete="off"/>
+    <button onclick="send()">Send</button>
+   </div>
+   <div class="quick">
+    <span class="small" style="padding:8px 3px">Try:</span>
+    <button onclick="ask('My VPN stopped working this morning')">VPN</button>
+    <button onclick="ask('I received a phishing email')">Security</button>
+    <button onclick="ask('My laptop is flickering')">Laptop</button>
+    <button onclick="ask('I need guest Wi-Fi tomorrow')">Guest Wi-Fi</button>
+    <button onclick="ask('My mailbox is full')">Mailbox</button>
+   </div>
+  </section>
+
+  <aside class="card service">
+   <div class="cardTitle">
+    <div><h2>Service Overview</h2><div class="small">Supplied assignment sample records — not live company data</div></div>
+   </div>
+   <div class="tabs">
+    <button id="reqtab" class="active" onclick="showTab('requests')">Employee Requests</button>
+    <button id="ticktab" onclick="showTab('tickets')">Ticket Queue</button>
+   </div>
+   <div class="tablewrap">
+    <table><thead id="thead"></thead><tbody id="tbody"></tbody></table>
+   </div>
+  </aside>
+ </div>
+
+ <div class="footer">Source of truth: Assignment 2 Data Pack — Veridian Corp · Sample records are clearly labelled · Unsupported policies are escalated</div>
+</main>
+
+<script>
+let reqs=[], ticks=[], conversation=[];
+
+async function load(){
+ const s=await fetch('/api/summary').then(r=>r.json());
+ document.getElementById('stats').innerHTML=`
+  <div class="stat"><div class="statTop"><div class="num">${s.knowledge_policies}</div><div class="dot"></div></div><div class="label">Policy sources</div></div>
+  <div class="stat"><div class="statTop"><div class="num">${s.employee_requests}</div><div class="dot"></div></div><div class="label">Sample employee requests</div></div>
+  <div class="stat"><div class="statTop"><div class="num">${s.active_tickets}</div><div class="dot"></div></div><div class="label">Active sample tickets</div></div>
+  <div class="stat"><div class="statTop"><div class="num">${s.closed_tickets}</div><div class="dot"></div></div><div class="label">Closed / sample history</div></div>`;
+ reqs=await fetch('/api/requests').then(r=>r.json());
+ ticks=await fetch('/api/tickets').then(r=>r.json());
+ renderRequests();
+}
+
+function renderRequests(){
+ document.getElementById('thead').innerHTML='<tr><th>ID</th><th>Employee</th><th>Request</th><th>Status</th></tr>';
+ document.getElementById('tbody').innerHTML=reqs.map(r=>`<tr><td class="id">${r.id}</td><td>${r.employee}</td><td>${r.request}</td><td class="status">${r.status}</td></tr>`).join('');
+}
+function renderTickets(){
+ document.getElementById('thead').innerHTML='<tr><th>ID</th><th>Employee</th><th>Issue</th><th>Status</th></tr>';
+ document.getElementById('tbody').innerHTML=ticks.map(t=>`<tr><td class="id">${t.id}</td><td>${t.employee}</td><td>${t.issue}</td><td class="status">${t.status}</td></tr>`).join('');
+}
+function showTab(x){
+ document.getElementById('reqtab').classList.toggle('active',x==='requests');
+ document.getElementById('ticktab').classList.toggle('active',x==='tickets');
+ x==='requests'?renderRequests():renderTickets();
+}
+function ask(x){document.getElementById('input').value=x;send()}
+function esc(text){return text.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function add(text,cls,meta=''){
+ const d=document.createElement('div'); d.className='msg '+cls;
+ d.innerHTML=esc(text).replace(/\n/g,'<br>')+(meta?`<div class="meta">${esc(meta)}</div>`:'');
+ document.getElementById('messages').appendChild(d); d.scrollIntoView({behavior:'smooth'});
+}
+async function escalateCurrent(){
+ const last=[...conversation].reverse().find(x=>x.role==='user');
+ if(!last)return;
+ const res=await fetch('/api/escalate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:last.content})}).then(r=>r.json());
+ add('Escalation created: '+res.ticket.id,'bot','Ticket Queue · '+res.ticket.status);
+ ticks=await fetch('/api/tickets').then(r=>r.json());
+ showTab('tickets');
+ load();
+}
+async function send(){
+ const el=document.getElementById('input'), text=el.value.trim(); if(!text)return;
+ el.value=''; add(text,'user'); conversation.push({role:'user',content:text});
+ const typing=document.createElement('div'); typing.className='msg bot typing'; typing.id='typing'; typing.textContent='Thinking…'; document.getElementById('messages').appendChild(typing);
+ try{
+  const res=await fetch('/api/chat',{
+   method:'POST',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({message:text,history:conversation})
+  }).then(r=>r.json());
+  typing.remove();
+  add(res.response,'bot',`Source: ${res.source} · Action: ${res.action}`);
+  if ((res.action || '').toLowerCase().includes('human') || (res.action || '').toLowerCase().includes('security')) {
+    const box=document.createElement('div'); box.className='msg bot';
+    box.innerHTML='<strong>Agent action</strong><br><span style="font-size:12px">This request needs human handling. You can create a demo escalation ticket for the queue.</span><br><br><button onclick="escalateCurrent()" style="font-size:11px;padding:8px 11px">Create escalation ticket</button>';
+    document.getElementById('messages').appendChild(box);
+  }
+  conversation.push({role:'assistant',content:res.response});
+ }catch(e){
+  typing.remove(); add('I’m unable to reach the support service right now. Please check that the local server is running.','bot','System');
+ }
+}
+document.getElementById('input').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+load();
+</script>
+</body>
+</html>

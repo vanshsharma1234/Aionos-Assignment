@@ -1,0 +1,17 @@
+DEMO VIDEO — 2 to 3 MINUTES
+
+0:00–0:15  Open the dashboard. Say: “This is my Veridian Internal Service Agent. It is grounded only in the supplied assignment data pack.”
+
+0:15–0:35  Show the overview cards and employee request / ticket tabs.
+
+0:35–1:00  Ask: “My VPN credentials expired.” Show KB-02 source and the renewal action.
+
+1:00–1:25  Ask: “I got a phishing email.” Show immediate Security escalation and the instruction not to forward it.
+
+1:25–1:50  Ask: “My laptop is dead.” Show KB-03 + Asset Management Policy and human/IT verification routing.
+
+1:50–2:10  Ask: “Guest Wi-Fi for tomorrow.” Show KB-07 self-service answer.
+
+2:10–2:35  Ask: “I need admin access to the finance reporting server.” Show that the agent does NOT invent a policy and routes to human review.
+
+2:35–2:45  End by showing the GitHub README and say: “The solution prioritizes grounded answers, traceable sources, and safe escalation.”
